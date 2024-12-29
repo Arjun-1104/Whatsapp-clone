@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{ useState} from 'react'
 import RoundedBtn from './common/RoundedBtn'
 import Chats from './common/Chats';
 import { MdPeopleAlt } from "react-icons/md";
@@ -7,10 +7,18 @@ import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { HiDotsVertical } from "react-icons/hi";
 import { BiFilter } from "react-icons/bi";
 import {pp} from '../assets/whatsapp';
+import { useAuth } from '../context/AuthContext';
+
+
 
 const LeftMenu = () => {
 
-    let[filter,setFilter] = useState(false);
+    let [filter,setFilter] = useState(false);
+
+    
+    
+ 
+
 
   return (
     // LeftMenu container

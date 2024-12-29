@@ -2,10 +2,28 @@ import React, { useEffect, useState } from 'react'
 import { ImFolderDownload } from 'react-icons/im'
 import { chatsData } from '../../data/data';
 import Chat from './Chat'
+import { getAllUser } from '../../utils/userHandler';
+import { useSocketContext } from '../../context/socketContext';
 
 const Chats = ({filter}) => {
-  let [chats,setChats] = useState(chatsData);
+  let [chats,setChats] = useState([]);
+  const { onlineUsers } = useSocketContext();
 
+  useEffect(()=>{
+    const setData = async()=>{
+      console.log("fetching chats.")
+      try {
+        let res = await getAllUser();
+        console.log(res)        
+        setChats(res);
+      } catch (e) {
+        console.log("error in fetching chats ", e);
+      }
+    }
+    setData();
+  },[])
+
+  
   useEffect(()=>{
     let newchats = filter?chats.filter((chat)=> chat.unreadMsgs):chatsData;
     setChats(newchats)
@@ -29,7 +47,16 @@ const Chats = ({filter}) => {
         </div>
 
       {/* chat single */}
-      {chats.map((chatDetails,i)=> <Chat key={chatDetails.contact} chatDetails={chatDetails} active={i===0}></Chat>)}
+      {chats.length > 0  && chats.map((chatDetails,i) =>{
+        return (
+          <Chat 
+            key={chatDetails._id} 
+            chatDetails={chatDetails}
+            active={i===1}
+            isOnline = {onlineUsers.find((id)=>id===chatDetails._id)}
+            ></Chat>
+        )
+      } )}
     </div>
   )
 }
